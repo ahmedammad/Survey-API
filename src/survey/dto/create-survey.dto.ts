@@ -1,5 +1,6 @@
-import { IsArray, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { ContactDto } from './contact.dto';
+import { Type } from 'class-transformer';
 
 export enum PropertyType {
     SINGLE = 'Einfamilienhaus',
@@ -57,5 +58,7 @@ export class CreateSurveyDto {
     interestedOtherSolutions: InterestedOtherSolutions;
 
     @IsOptional()
+    @ValidateNested()
+    @Type(() => ContactDto)
     contact?: ContactDto;
 }

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1758708556722",
+    "propertyType": "Einfamilienhaus",
+    "roofOrientations": [
+      "West",
+      "Süd"
+    ],
+    "roofAge": "Unter 5 Jahre",
+    "consumption": "3.000–5.000 kWh",
+    "interestedOtherSolutions": "Nein",
+    "contact": {
+      "email": "tes@a.fg",
+      "phone": "+49234567890"
+    },
+    "createdAt": "2025-09-24T10:09:16.722Z"
+  }
+]
