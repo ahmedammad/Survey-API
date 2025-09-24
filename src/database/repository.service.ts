@@ -40,4 +40,25 @@ export class RepositoryService {
         return this.writeQueue;
     }
 
+    async getAll(): Promise<SurveyEntity[]> {
+        return this.readFile();
+    }
+
+    async findOne(id: string): Promise<SurveyEntity | undefined> {
+        const items = await this.readFile();
+        return items.find((i) => i.id === id);
+    }
+
+    async delete(id: string): Promise<boolean> {
+        const items = await this.readFile();
+        const idx = items.findIndex((i) => i.id === id);
+
+        if (idx === -1) return false;
+
+        items.splice(idx, 1);
+        await this.writeFile(items);
+
+        return true;
+    }
+
 }
