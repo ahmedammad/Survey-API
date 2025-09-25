@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSurveyDto } from './dto/create-survey.dto';
 import { SurveyEntity } from './types/survey.type';
-import { RepositoryService } from 'src/database/repository.service';
+import { RepositoryService } from '../database/repository.service';
 
 @Injectable()
 export class SurveyService {
