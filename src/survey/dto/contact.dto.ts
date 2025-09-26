@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsPhoneNumber, IsString, Length } from 'class-validator';
+import { IsEmail, IsOptional, IsString, Length, Matches } from 'class-validator';
 
 export class ContactDto {
     @IsOptional()
@@ -11,6 +11,8 @@ export class ContactDto {
     email?: string;
 
     @IsOptional()
-    @IsPhoneNumber()
+    @Matches(/^\+?[1-9]\d{6,14}$/, {
+        message: 'Phone number must be a valid international format',
+    })
     phone?: string;
 }

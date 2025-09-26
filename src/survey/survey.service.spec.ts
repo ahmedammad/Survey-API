@@ -9,7 +9,7 @@ describe('SurveyService', () => {
   let service: SurveyService;
   let repo: jest.Mocked<RepositoryService>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         SurveyService,

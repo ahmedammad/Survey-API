@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SurveyController } from './survey.controller';
 import { SurveyService } from './survey.service';
-import { RepositoryService } from 'src/database/repository.service';
+import { RepositoryService } from '../database/repository.service';
 
 @Module({
   controllers: [SurveyController],

@@ -8,7 +8,7 @@ describe('SurveyController', () => {
   let controller: SurveyController;
   let service: jest.Mocked<SurveyService>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [SurveyController],
       providers: [
