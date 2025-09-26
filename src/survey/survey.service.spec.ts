@@ -3,7 +3,7 @@ import { SurveyService } from './survey.service';
 import { RepositoryService } from '../database/repository.service';
 import { Consumption, CreateSurveyDto, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from './dto/create-survey.dto';
 import { NotFoundException } from '@nestjs/common';
-import { SurveyEntity } from './types/survey.type';
+import { SurveyResponseDto } from './dto/survey-response.dto';
 
 describe('SurveyService', () => {
   let service: SurveyService;
@@ -42,7 +42,7 @@ describe('SurveyService', () => {
     },
   };
 
-  const surveyEntity: SurveyEntity = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
+  const surveyEntity: SurveyResponseDto = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
 
   it('should create a survey', async () => {
     repo.create.mockResolvedValue(surveyEntity);

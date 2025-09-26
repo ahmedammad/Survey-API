@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RepositoryService } from './repository.service';
 import { promises as fs } from 'fs';
 import { Consumption, CreateSurveyDto, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from '../survey/dto/create-survey.dto';
-import { SurveyEntity } from '../survey/types/survey.type';
+import { SurveyResponseDto } from '../survey/dto/survey-response.dto';
 import { Logger } from '@nestjs/common';
 
 jest.mock('fs', () => ({
@@ -29,7 +29,7 @@ describe('RepositoryService', () => {
     },
   };
 
-  const surveyEntity: SurveyEntity = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
+  const surveyEntity: SurveyResponseDto = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
   const fileData = JSON.stringify([surveyEntity]);
 
   beforeAll(async () => {
@@ -100,7 +100,7 @@ describe('RepositoryService', () => {
   });
 
   it('should handle queued writes in order', async () => {
-    const surveys: SurveyEntity[] = [];
+    const surveys: SurveyResponseDto[] = [];
     (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(surveys));
     (fs.writeFile as jest.Mock).mockImplementation(async (file, data) => {
       surveys.push(JSON.parse(data)[0]);

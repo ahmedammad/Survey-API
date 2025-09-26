@@ -1,6 +1,7 @@
 import { IsArray, IsEnum, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { ContactDto } from './contact.dto';
 import { Type } from 'class-transformer';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export enum PropertyType {
     SINGLE = 'Einfamilienhaus',
@@ -37,26 +38,36 @@ export enum InterestedOtherSolutions {
 }
 
 export class CreateSurveyDto {
+    @ApiProperty({ enum: PropertyType, example: PropertyType.COMMERCIAL })
     @IsNotEmpty()
     @IsEnum(PropertyType)
     propertyType: PropertyType;
 
+    @ApiProperty({ type: [String], enum: RoofOrientation, example: [RoofOrientation.EAST] })
     @IsArray()
     @IsEnum(RoofOrientation, { each: true })
     roofOrientations: RoofOrientation[];
 
+    @ApiProperty({ enum: RoofAge, example: RoofAge.BETWEEN_5_AND_15 })
     @IsNotEmpty()
     @IsEnum(RoofAge)
     roofAge: RoofAge;
 
+    @ApiProperty({ enum: Consumption, example: Consumption.BETWEEN_3000_AND_5000 })
     @IsNotEmpty()
     @IsEnum(Consumption)
     consumption: Consumption;
 
+    @ApiProperty({ enum: InterestedOtherSolutions, example: InterestedOtherSolutions.DONT_KNOW })
     @IsNotEmpty()
     @IsEnum(InterestedOtherSolutions)
     interestedOtherSolutions: InterestedOtherSolutions;
 
+    @ApiPropertyOptional({ type: ContactDto, example: {
+      name: 'John Miller',
+      email: 'john@example.com',
+      phone: '+49123456789',
+    }})
     @IsOptional()
     @ValidateNested()
     @Type(() => ContactDto)

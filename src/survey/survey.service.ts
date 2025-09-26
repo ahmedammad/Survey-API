@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSurveyDto } from './dto/create-survey.dto';
-import { SurveyEntity } from './types/survey.type';
+import { SurveyResponseDto } from './dto/survey-response.dto';
 import { RepositoryService } from '../database/repository.service';
 
 @Injectable()
@@ -8,8 +8,8 @@ export class SurveyService {
 
     constructor(private readonly repo: RepositoryService) {}
 
-    async createSurvey(dto: CreateSurveyDto): Promise<SurveyEntity> {
-        const survey: SurveyEntity = {
+    async createSurvey(dto: CreateSurveyDto): Promise<SurveyResponseDto> {
+        const survey: SurveyResponseDto = {
             id: Date.now().toString(),
             ...dto,
             createdAt: new Date().toISOString()
@@ -17,11 +17,11 @@ export class SurveyService {
         return this.repo.create(survey);
     }
 
-    async getAllSurveys(): Promise<SurveyEntity[]> {
+    async getAllSurveys(): Promise<SurveyResponseDto[]> {
         return this.repo.getAll();
     }
 
-    async findSurvey(id: string): Promise<SurveyEntity> {
+    async findSurvey(id: string): Promise<SurveyResponseDto> {
         const item = await this.repo.findOne(id);
 
         if (!item) throw new NotFoundException('Survey not found');

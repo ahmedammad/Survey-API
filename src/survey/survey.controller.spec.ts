@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyController } from './survey.controller';
 import { SurveyService } from './survey.service';
 import { Consumption, CreateSurveyDto, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from './dto/create-survey.dto';
-import { SurveyEntity } from './types/survey.type';
+import { SurveyResponseDto } from './dto/survey-response.dto';
 
 describe('SurveyController', () => {
   let controller: SurveyController;
@@ -41,7 +41,7 @@ describe('SurveyController', () => {
     },
   };
 
-  const surveyEntity: SurveyEntity = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
+  const surveyEntity: SurveyResponseDto = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
 
   it('should create a survey', async () => {
     service.createSurvey.mockResolvedValue(surveyEntity);

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { SurveyEntity } from 'src/survey/types/survey.type';
+import { SurveyResponseDto } from '../survey/dto/survey-response.dto';
 
 @Injectable()
 export class RepositoryService {
@@ -14,24 +14,24 @@ export class RepositoryService {
         this.file = join(process.cwd(), 'data', 'surveys.json');
     }
 
-    async create(item: SurveyEntity): Promise<SurveyEntity> {
+    async create(item: SurveyResponseDto): Promise<SurveyResponseDto> {
         const items = await this.readFile();
         items.push(item);
         await this.writeFile(items);
         return item;
     }
 
-    private async readFile(): Promise<SurveyEntity[]> {
+    private async readFile(): Promise<SurveyResponseDto[]> {
         try {
             const content = await fs.readFile(this.file, 'utf8');
-            return JSON.parse(content) as SurveyEntity[];
+            return JSON.parse(content) as SurveyResponseDto[];
         } catch (err: any) {
             this.logger.error('Failed to read file', err);
             throw err;
         }
     }
 
-    private async writeFile(data: SurveyEntity[]): Promise<void> {
+    private async writeFile(data: SurveyResponseDto[]): Promise<void> {
         this.writeQueue = this.writeQueue.then(async () => {
             const tmp = `${this.file}.tmp`;
             await fs.writeFile(tmp, JSON.stringify(data, null, 2), 'utf8');
@@ -40,11 +40,11 @@ export class RepositoryService {
         return this.writeQueue;
     }
 
-    async getAll(): Promise<SurveyEntity[]> {
+    async getAll(): Promise<SurveyResponseDto[]> {
         return this.readFile();
     }
 
-    async findOne(id: string): Promise<SurveyEntity | undefined> {
+    async findOne(id: string): Promise<SurveyResponseDto | undefined> {
         const items = await this.readFile();
         return items.find((i) => i.id === id);
     }
