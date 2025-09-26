@@ -5,6 +5,6 @@ import { RepositoryService } from '../database/repository.service';
 
 @Module({
   controllers: [SurveyController],
-  providers: [SurveyService, RepositoryService]
+  providers: [SurveyService, RepositoryService],
 })
 export class SurveyModule {}

@@ -5,32 +5,30 @@ import { RepositoryService } from '../database/repository.service';
 
 @Injectable()
 export class SurveyService {
+  constructor(private readonly repo: RepositoryService) {}
 
-    constructor(private readonly repo: RepositoryService) {}
+  async createSurvey(dto: CreateSurveyDto): Promise<SurveyResponseDto> {
+    const survey: SurveyResponseDto = {
+      id: Date.now().toString(),
+      ...dto,
+      createdAt: new Date().toISOString(),
+    };
+    return this.repo.create(survey);
+  }
 
-    async createSurvey(dto: CreateSurveyDto): Promise<SurveyResponseDto> {
-        const survey: SurveyResponseDto = {
-            id: Date.now().toString(),
-            ...dto,
-            createdAt: new Date().toISOString()
-        };
-        return this.repo.create(survey);
-    }
+  async getAllSurveys(): Promise<SurveyResponseDto[]> {
+    return this.repo.getAll();
+  }
 
-    async getAllSurveys(): Promise<SurveyResponseDto[]> {
-        return this.repo.getAll();
-    }
+  async findSurvey(id: string): Promise<SurveyResponseDto> {
+    const item = await this.repo.findOne(id);
 
-    async findSurvey(id: string): Promise<SurveyResponseDto> {
-        const item = await this.repo.findOne(id);
+    if (!item) throw new NotFoundException('Survey not found');
+    return item;
+  }
 
-        if (!item) throw new NotFoundException('Survey not found');
-        return item;
-    }
-
-    async deleteSurvey(id: string): Promise<void> {
-        const ok = await this.repo.delete(id);
-        if (!ok) throw new NotFoundException('Survey not found');
-    }
-
+  async deleteSurvey(id: string): Promise<void> {
+    const ok = await this.repo.delete(id);
+    if (!ok) throw new NotFoundException('Survey not found');
+  }
 }

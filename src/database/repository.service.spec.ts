@@ -1,7 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RepositoryService } from './repository.service';
 import { promises as fs } from 'fs';
-import { Consumption, CreateSurveyDto, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from '../survey/dto/create-survey.dto';
+import {
+  Consumption,
+  CreateSurveyDto,
+  InterestedOtherSolutions,
+  PropertyType,
+  RoofAge,
+  RoofOrientation,
+} from '../survey/dto/create-survey.dto';
 import { SurveyResponseDto } from '../survey/dto/survey-response.dto';
 import { Logger } from '@nestjs/common';
 
@@ -29,7 +36,11 @@ describe('RepositoryService', () => {
     },
   };
 
-  const surveyEntity: SurveyResponseDto = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
+  const surveyEntity: SurveyResponseDto = {
+    id: '12345',
+    ...createSurveyDto,
+    createdAt: new Date().toISOString(),
+  };
   const fileData = JSON.stringify([surveyEntity]);
 
   beforeAll(async () => {
@@ -116,5 +127,4 @@ describe('RepositoryService', () => {
     expect(surveys[0]).toEqual(surveyEntity);
     expect(surveys[1]).toEqual({ ...surveyEntity, id: '6789' });
   });
-
 });

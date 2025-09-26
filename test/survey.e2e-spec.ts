@@ -5,7 +5,13 @@ import { AppModule } from '../src/app.module';
 import { RepositoryService } from '../src/database/repository.service';
 import { promises as fs } from 'fs';
 import { join } from 'path';
-import { Consumption, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from '../src/survey/dto/create-survey.dto';
+import {
+  Consumption,
+  InterestedOtherSolutions,
+  PropertyType,
+  RoofAge,
+  RoofOrientation,
+} from '../src/survey/dto/create-survey.dto';
 
 describe('SurveyController (e2e)', () => {
   let app: INestApplication;
@@ -35,17 +41,17 @@ describe('SurveyController (e2e)', () => {
   });
 
   const survey = {
-      propertyType: PropertyType.SINGLE,
-      roofOrientations: [RoofOrientation.SOUTH],
-      roofAge: RoofAge.UNDER_5,
-      consumption: Consumption.UNDER_3000,
-      interestedOtherSolutions: InterestedOtherSolutions.YES,
-      contact: {
-        name: 'Inna',
-        email: 'inna@example.com',
-        phone: '+49123456789',
-      },
-    };
+    propertyType: PropertyType.SINGLE,
+    roofOrientations: [RoofOrientation.SOUTH],
+    roofAge: RoofAge.UNDER_5,
+    consumption: Consumption.UNDER_3000,
+    interestedOtherSolutions: InterestedOtherSolutions.YES,
+    contact: {
+      name: 'Inna',
+      email: 'inna@example.com',
+      phone: '+49123456789',
+    },
+  };
 
   it('/POST api/survey/submit (create survey)', async () => {
     const res = await request(app.getHttpServer())
@@ -60,7 +66,7 @@ describe('SurveyController (e2e)', () => {
   });
 
   it('/POST api/survey/submit (create survey - without contact info)', async () => {
-    const {contact, ...tmpSurvey} = survey;
+    const { contact, ...tmpSurvey } = survey;
 
     const res = await request(app.getHttpServer())
       .post('/api/survey/submit')
@@ -76,7 +82,7 @@ describe('SurveyController (e2e)', () => {
   it('/POST api/survey/submit (create survey - invalid propertyType)', async () => {
     const tmpSurvey = {
       ...survey,
-      propertyType: "building"
+      propertyType: 'building',
     };
 
     const res = await request(app.getHttpServer())
@@ -84,13 +90,15 @@ describe('SurveyController (e2e)', () => {
       .send(tmpSurvey)
       .expect(400);
 
-    expect(res.body.message).toContain('propertyType must be one of the following values: Einfamilienhaus, Mehrfamilienhaus, Gewerbeimmobilie');
+    expect(res.body.message).toContain(
+      'propertyType must be one of the following values: Einfamilienhaus, Mehrfamilienhaus, Gewerbeimmobilie',
+    );
   });
 
   it('/POST api/survey/submit (create survey - invalid roofOrientations)', async () => {
     const tmpSurvey = {
       ...survey,
-      roofOrientations: ["Süd", "up"]
+      roofOrientations: ['Süd', 'up'],
     };
 
     const res = await request(app.getHttpServer())
@@ -98,7 +106,9 @@ describe('SurveyController (e2e)', () => {
       .send(tmpSurvey)
       .expect(400);
 
-    expect(res.body.message).toContain('each value in roofOrientations must be one of the following values: Süd, West, Ost, Nord, Keine Angabe');
+    expect(res.body.message).toContain(
+      'each value in roofOrientations must be one of the following values: Süd, West, Ost, Nord, Keine Angabe',
+    );
   });
 
   it('/POST api/survey/submit (create survey - invalid phone)', async () => {
@@ -130,12 +140,10 @@ describe('SurveyController (e2e)', () => {
   });
 
   it('/GET api/survey (empty list)', async () => {
-    const res = await request(app.getHttpServer())
-      .get('/api/survey')
-      .expect(200);
+    const res = await request(app.getHttpServer()).get('/api/survey').expect(200);
 
     expect(res.body).toEqual([]);
-  })
+  });
 
   it('/GET api/survey (list of all surveys)', async () => {
     const tmpSurvey = await repo.create({
@@ -144,12 +152,10 @@ describe('SurveyController (e2e)', () => {
       createdAt: new Date().toISOString(),
     });
 
-    const res = await request(app.getHttpServer())
-      .get('/api/survey')
-      .expect(200);
+    const res = await request(app.getHttpServer()).get('/api/survey').expect(200);
 
     expect(res.body).toEqual([tmpSurvey]);
-  })
+  });
 
   it('/GET api/survey/:id (get survey by id)', async () => {
     const tmpSurvey = await repo.create({
@@ -158,17 +164,13 @@ describe('SurveyController (e2e)', () => {
       createdAt: new Date().toISOString(),
     });
 
-    const res = await request(app.getHttpServer())
-      .get(`/api/survey/${tmpSurvey.id}`)
-      .expect(200);
+    const res = await request(app.getHttpServer()).get(`/api/survey/${tmpSurvey.id}`).expect(200);
 
     expect(res.body).toEqual(tmpSurvey);
   });
 
   it('/GET api/survey/:id (survey not found)', async () => {
-    const res = await request(app.getHttpServer())
-      .get('/api/survey/someid')
-      .expect(404);
+    const res = await request(app.getHttpServer()).get('/api/survey/someid').expect(404);
 
     expect(res.body.message).toBe('Survey not found');
   });
@@ -188,11 +190,8 @@ describe('SurveyController (e2e)', () => {
   });
 
   it('/DELETE api/survey/:id (survey not found while deleting)', async () => {
-    const res = await request(app.getHttpServer())
-      .delete('/api/survey/someid')
-      .expect(404);
+    const res = await request(app.getHttpServer()).delete('/api/survey/someid').expect(404);
 
     expect(res.body.message).toBe('Survey not found');
   });
-
 });

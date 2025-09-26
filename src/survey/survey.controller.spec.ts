@@ -1,7 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyController } from './survey.controller';
 import { SurveyService } from './survey.service';
-import { Consumption, CreateSurveyDto, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from './dto/create-survey.dto';
+import {
+  Consumption,
+  CreateSurveyDto,
+  InterestedOtherSolutions,
+  PropertyType,
+  RoofAge,
+  RoofOrientation,
+} from './dto/create-survey.dto';
 import { SurveyResponseDto } from './dto/survey-response.dto';
 
 describe('SurveyController', () => {
@@ -41,7 +48,11 @@ describe('SurveyController', () => {
     },
   };
 
-  const surveyEntity: SurveyResponseDto = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
+  const surveyEntity: SurveyResponseDto = {
+    id: '12345',
+    ...createSurveyDto,
+    createdAt: new Date().toISOString(),
+  };
 
   it('should create a survey', async () => {
     service.createSurvey.mockResolvedValue(surveyEntity);
@@ -59,7 +70,7 @@ describe('SurveyController', () => {
     service.getAllSurveys.mockResolvedValue([surveyEntity]);
 
     const result = await controller.getAllSurveys();
-  
+
     expect(result).toHaveLength(1);
     expect(service.getAllSurveys).toHaveBeenCalled();
   });
@@ -81,5 +92,4 @@ describe('SurveyController', () => {
     expect(result.success).toEqual(true);
     expect(service.deleteSurvey).toHaveBeenCalledWith('12345');
   });
-
 });

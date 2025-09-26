@@ -1,7 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SurveyService } from './survey.service';
 import { RepositoryService } from '../database/repository.service';
-import { Consumption, CreateSurveyDto, InterestedOtherSolutions, PropertyType, RoofAge, RoofOrientation } from './dto/create-survey.dto';
+import {
+  Consumption,
+  CreateSurveyDto,
+  InterestedOtherSolutions,
+  PropertyType,
+  RoofAge,
+  RoofOrientation,
+} from './dto/create-survey.dto';
 import { NotFoundException } from '@nestjs/common';
 import { SurveyResponseDto } from './dto/survey-response.dto';
 
@@ -42,7 +49,11 @@ describe('SurveyService', () => {
     },
   };
 
-  const surveyEntity: SurveyResponseDto = { id: "12345", ...createSurveyDto, createdAt: new Date().toISOString() };
+  const surveyEntity: SurveyResponseDto = {
+    id: '12345',
+    ...createSurveyDto,
+    createdAt: new Date().toISOString(),
+  };
 
   it('should create a survey', async () => {
     repo.create.mockResolvedValue(surveyEntity);
@@ -77,7 +88,9 @@ describe('SurveyService', () => {
   it('should throw NotFoundException with message if survey not found', async () => {
     repo.findOne.mockResolvedValue(undefined);
 
-    await expect(service.findSurvey('123')).rejects.toThrow(new NotFoundException('Survey not found'));
+    await expect(service.findSurvey('123')).rejects.toThrow(
+      new NotFoundException('Survey not found'),
+    );
     expect(repo.findOne).toHaveBeenCalledWith('123');
   });
 
@@ -92,8 +105,9 @@ describe('SurveyService', () => {
   it('should throw NotFoundException with message if survey not found while deleting', async () => {
     repo.delete.mockResolvedValue(false);
 
-    await expect(service.deleteSurvey('123')).rejects.toThrow(new NotFoundException('Survey not found'));
+    await expect(service.deleteSurvey('123')).rejects.toThrow(
+      new NotFoundException('Survey not found'),
+    );
     expect(repo.delete).toHaveBeenCalledWith('123');
   });
-
 });
