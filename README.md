@@ -60,7 +60,7 @@ $ npm run test:cov
 ## API 
 Open the following link to see API end points and test them
 ```bash
-$ http://localhost:3000/docs
+http://localhost:3000/docs
 
 ```
 

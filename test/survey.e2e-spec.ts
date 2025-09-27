@@ -111,6 +111,71 @@ describe('SurveyController (e2e)', () => {
     );
   });
 
+  it('/POST api/survey/submit (create survey - invalid roofAge)', async () => {
+    const tmpSurvey = {
+      ...survey,
+      roofAge: 4,
+    };
+
+    const res = await request(app.getHttpServer())
+      .post('/api/survey/submit')
+      .send(tmpSurvey)
+      .expect(400);
+
+    expect(res.body.message).toContain(
+      'roofAge must be one of the following values: Unter 5 Jahre, 5–15 Jahre, Über 15 Jahre, Keine Angabe',
+    );
+  });
+
+  it('/POST api/survey/submit (create survey - invalid consumption)', async () => {
+    const tmpSurvey = {
+      ...survey,
+      consumption: '5000',
+    };
+
+    const res = await request(app.getHttpServer())
+      .post('/api/survey/submit')
+      .send(tmpSurvey)
+      .expect(400);
+
+    expect(res.body.message).toContain(
+      'consumption must be one of the following values: Unter 3.000 kWh, 3.000–5.000 kWh, Über 5.000 kWh, Keine Angabe',
+    );
+  });
+
+  it('/POST api/survey/submit (create survey - invalid interestedOtherSolutions)', async () => {
+    const tmpSurvey = {
+      ...survey,
+      interestedOtherSolutions: 'always',
+    };
+
+    const res = await request(app.getHttpServer())
+      .post('/api/survey/submit')
+      .send(tmpSurvey)
+      .expect(400);
+
+    expect(res.body.message).toContain(
+      'interestedOtherSolutions must be one of the following values: Ja, Nein, Weiss nicht',
+    );
+  });
+
+  it('/POST api/survey/submit (create survey - invalid name)', async () => {
+    const tmpSurvey = {
+      ...survey,
+      contact: { ...survey.contact, name: 1234 },
+    };
+
+    const res = await request(app.getHttpServer())
+      .post('/api/survey/submit')
+      .send(tmpSurvey)
+      .expect(400);
+
+    expect(res.body.message).toContain(
+      'contact.name must be longer than or equal to 1 and shorter than or equal to 50 characters',
+    );
+    expect(res.body.message).toContain('contact.name must be a string');
+  });
+
   it('/POST api/survey/submit (create survey - invalid phone)', async () => {
     const tmpSurvey = {
       ...survey,
